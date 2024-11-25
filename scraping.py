@@ -24,35 +24,26 @@ def transform_books(datas):
     
     for book in books:
         #Book's Title 
-        title = book.h3.a['title']
-        print(f"TITLE: {title}")
-        
+        title = book.h3.a['title']        
         #Book's Rating
         if book.select_one(".One"):
             rate = 1
-            print(f"RATING: {rate} out of 5")
         elif book.select_one(".Two"):
             rate = 2
-            print(f"RATING: {rate} out of 5")
         elif book.select_one(".Three"):
             rate = 3
-            print(f"RATING: {rate} out of 5")
         elif book.select_one(".Four"):
             rate = 4
-            print(f"RATING: {rate} out of 5")
         elif book.select_one(".Five"):
             rate = 5
-            print(f"RATING: {rate} out of 5")
         else:
             rate = None
-            print(f"RATING: {rate}")
 
         #Price
         data_price = book.select('.price_color')[0].getText()
         price_split = data_price.split("Â")
         price = Decimal(price_split[1].split("£")[1]).quantize(Decimal("0.00"), rounding=ROUND_DOWN)
-        print(f"PRICE: {price_split[1]}")
-        
+                
         #Stock Available
         #strip method to remove start and end whitespace
         stock_available = book.select('.instock')[0].getText().strip()
@@ -60,7 +51,6 @@ def transform_books(datas):
             stock = True
         else:
             stock = False
-        print(f"STOCK: {stock_available}")
         
         book_to_store = {
          "title": title, "rating": rate,
@@ -72,4 +62,4 @@ def transform_books(datas):
     return collected_books
 
 def load_books(books):
-
+    pass
