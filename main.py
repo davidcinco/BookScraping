@@ -1,11 +1,12 @@
 import scraping
 
-scraping.extract_books_pages()
-books = scraping.transform_all_books(scraping.datas)
+def getAllBooksForCSV():
+    scraping.extract_books_pages()
+    books = scraping.transform_all_books(scraping.datas)
+    scraping.load_books_csv(books)
 
-res = scraping.extract_books_page(2)
-dr =scraping.transform_books(res)
-
-scraping.load_books(dr)
-
-
+def getAllBooksForDB():
+    scraping.extract_books_pages()
+    books = scraping.transform_all_books(scraping.datas)
+    scraping.load_books_database(books)
+    

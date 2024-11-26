@@ -70,7 +70,7 @@ def transform_books(datas):
 
 #Functions to loop throughout multiple pages from books
 def extract_books_pages():
-    for i in range(1, 10):        
+    for i in range(1, 49):        
         response = requests.get(f"http://books.toscrape.com/catalogue/page-{i}.html")
         if response.status_code == 200:
             try:
@@ -131,12 +131,13 @@ def transform_all_books(responses):
         df = pd.DataFrame(collected_books)
         return df
 
-#Function to load books into database
+#Function to load books into database and CSV file
 def load_books_database(books):
     for index, row in books.iterrows():
         print(row['TITLE'])
-        
-#Function to load books into CSV file
+
 def load_books_csv(books):
-    for index, row in books.iterrows():
-        print(row['TITLE'])
+    books.to_csv("books.csv", sep=',', index=False, encoding='utf-8')
+
+
+        

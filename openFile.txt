@@ -1,0 +1,7 @@
+# with open("books.csv", mode="w", newline="") as book_csvFile:
+#     fields = ["Title", "Rate", "Price", "In-Stock"]
+#     #Write Headers
+#     writer = csv.DictWriter(book_csvFile, fieldnames=fields)
+#     writer.writeheader()
+#     #Write Rows of Data (books)
+#     writer.writerows()
