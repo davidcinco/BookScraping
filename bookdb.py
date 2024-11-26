@@ -23,9 +23,9 @@ class BookDB:
         connection = self.globalConnection.cursor()
         try:
             connection.execute("""
-            CREATE TABLE books(
+            CREATE TABLE IF NOT EXISTS books(
                 id serial primary key,
-                title varchar(255) not null,
+                title varchar(255) not null UNIQUE,
                 rating int,
                 price decimal(4,2) not null,
                 stock boolean not null
@@ -41,8 +41,8 @@ class BookDB:
     def addBook(self, book):
         connection = self.globalConnection.cursor()
         try:
-            connection.execute("""
-                INSERT INTO books(title, rating, price, stock) VALUE(%s, %s, %s, %s)""", 
+            connection.execute(
+                """INSERT INTO books(title, rating, price, stock) VALUES(%s, %s, %s, %s) ON CONFLICT(title) DO NOTHING""", 
                 (book[0], book[1], book[2], book[3])
                 )
             self.globalConnection.commit()

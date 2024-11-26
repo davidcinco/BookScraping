@@ -1,5 +1,6 @@
 import pandas as pd
 import requests, bs4
+from bookdb import BookDB
 from decimal import Decimal, ROUND_DOWN
 
 datas = []
@@ -133,11 +134,22 @@ def transform_all_books(responses):
 
 #Function to load books into database and CSV file
 def load_books_database(books):
-    for index, row in books.iterrows():
-        print(row['TITLE'])
+    book_db = BookDB()    
+    try:
+        book_db.databaseConnection()
+        book_db.createBookTable()
 
+        for index, row in books.iterrows():
+            book = [row['TITLE'], row['RATING'], row['PRICE'], row['IN-STOCK']]
+            book_db.addBook(book)
+
+    except Exception as e:
+        print(f"An error has happened during load_books_database: {e}")
+    
 def load_books_csv(books):
     books.to_csv("books.csv", sep=',', index=False, encoding='utf-8')
 
-
-        
+#Function to only print books on Terminal
+def load_books(books):
+    for index, row in books.iterrows():
+        print(row)
