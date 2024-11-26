@@ -1,8 +1,9 @@
 import pandas as pd
 import requests, bs4
 from decimal import Decimal, ROUND_DOWN
+from bookdb import BookDB
 
-website_url = "http://books.toscrape.com/"
+website_url = f"http://books.toscrape.com/catalogue/page-30.html"
 
 def extract_books(url):
     response = requests.get(url)
@@ -20,7 +21,12 @@ def transform_books(datas):
     soup = bs4.BeautifulSoup(datas.text, "lxml")
     books = soup.select(".product_pod")
 
-    collected_books = []
+    collected_books = {
+        "TITLE": [],
+        "RATING": [],
+        "PRICE": [],
+        "IN-STOCK": []
+    }
     
     for book in books:
         #Book's Title 
@@ -51,15 +57,25 @@ def transform_books(datas):
             stock = True
         else:
             stock = False
-        
-        book_to_store = {
-         "title": title, "rating": rate,
-         "price": price, "stock": stock 
-        }
-        
-        collected_books.append(book_to_store)
 
-    return collected_books
+        collected_books['TITLE'].append(title)
+        collected_books['RATING'].append(rate)
+        collected_books['PRICE'].append(price)
+        collected_books['IN-STOCK'].append(stock)
+        
+        # book_to_store = {
+        #  "title": title, "rating": rate,
+        #  "price": price, "stock": stock 
+        # }
+        
+        # collected_books.append(book_to_store)
 
-def load_books(books):
-    pass
+    df = pd.DataFrame(collected_books)
+    return df
+
+# def load_books(books):
+
+extract = extract_books(website_url)
+if extract is not None:
+    transform = transform_books(extract)
+    print(transform)

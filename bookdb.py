@@ -53,6 +53,6 @@ class BookDB:
         except Exception as e:
             print(f"An Exception Happened: {e}")
                     
-book = BookDB()
-book.databaseConnection()
+# book = BookDB()
+# book.databaseConnection()
     
