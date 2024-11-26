@@ -16,4 +16,3 @@ def getAllBooks():
     books = scraping.transform_books(response)
     scraping.load_books(books)
 
-getAllBooksForDB()
