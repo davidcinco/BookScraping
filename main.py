@@ -1,6 +1,5 @@
 import scraping
 
-
 def getAllBooksForDB():
     scraping.extract_books_pages()
     books = scraping.transform_all_books(scraping.datas)
@@ -16,3 +15,5 @@ def getAllBooks():
     books = scraping.transform_books(response)
     scraping.load_books(books)
 
+def getAllBooksForSqlite():
+    

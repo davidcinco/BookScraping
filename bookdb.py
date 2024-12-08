@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.sql
 
 class BookDB:
     globalConnection = None
@@ -18,6 +19,20 @@ class BookDB:
             print(f"ConnectionError happened {e}")
         except Exception as e:
             print(f"Exception happened: {e}") 
+         
+    def createBookDatabase(self):
+        try:
+            conn = psycopg2.connect(
+                database="postgres",
+                host="127.0.0.1",
+                user="posstgress"
+                
+            )
+            conn.cursor().execute("CREATE DATABASE bookscrapingdb")
+            conn.commit()
+            conn.close()
+        except ConnectionError as e:
+            print(f"ConnectionError happened {e}")
             
     def createBookTable(self):
         connection = self.globalConnection.cursor()
@@ -53,6 +68,3 @@ class BookDB:
         except Exception as e:
             print(f"An Exception Happened: {e}")
                     
-# book = BookDB()
-# book.databaseConnection()
-    

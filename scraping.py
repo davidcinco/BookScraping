@@ -5,7 +5,7 @@ from decimal import Decimal, ROUND_DOWN
 
 datas = []
 
-#Functionss to loop in one single page from books
+#Extract Methods
 def extract_books_page(page):
     url = f"http://books.toscrape.com/catalogue/page-{page}.html"
     response = requests.get(url)
@@ -20,6 +20,18 @@ def extract_books_page(page):
         print(f"Status 400 in extract_books")
         return None
 
+def extract_books_pages():
+    for i in range(1, 49):        
+        response = requests.get(f"http://books.toscrape.com/catalogue/page-{i}.html")
+        if response.status_code == 200:
+            try:
+                datas.append(response)
+            except Exception as e:
+                print(f"Status 400 in extract_books: {e}")
+        else:
+            print(f"Status 400 in extract_books")
+
+#Transform Methods   
 def transform_books(datas):
     soup = bs4.BeautifulSoup(datas.text, "lxml")
     books = soup.select(".product_pod")
@@ -68,18 +80,6 @@ def transform_books(datas):
         
     df = pd.DataFrame(collected_books)
     return df
-
-#Functions to loop throughout multiple pages from books
-def extract_books_pages():
-    for i in range(1, 49):        
-        response = requests.get(f"http://books.toscrape.com/catalogue/page-{i}.html")
-        if response.status_code == 200:
-            try:
-                datas.append(response)
-            except Exception as e:
-                print(f"Status 400 in extract_books: {e}")
-        else:
-            print(f"Status 400 in extract_books")
             
 def transform_all_books(responses):
     if datas != []:
@@ -132,7 +132,7 @@ def transform_all_books(responses):
         df = pd.DataFrame(collected_books)
         return df
 
-#Function to load books into database and CSV file
+#Load Methods
 def load_books_database(books):
     book_db = BookDB()    
     try:
